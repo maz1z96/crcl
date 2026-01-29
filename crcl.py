@@ -44,19 +44,17 @@ def get_constant():
 
 def renal_function(result):
     categories = {
-        range(90, 5000): "Normal renal function",
-        range(60, 90): "Mild renal function",
-        range(45, 60): "Mild-moderate renal function",
-        range(30, 45): "Moderate-severe renal function",
-        range(15, 30): "Severe reduction",
-        range(0, 15): "Kidney Failure"
+        (90, float('inf')): "Normal renal function",
+        (60, 90): "Mild renal function",
+        (45, 60): "Mild-moderate renal function",
+        (30, 45): "Moderate-severe renal function",
+        (15, 30): "Severe reduction",
+        (0, 15): "Kidney Failure"
     }
 
-    int_result = int(result)
-
-    for gfr in categories:
-        if int_result in gfr:
-            return categories[gfr]
+    for gfr_range, description in categories.items():
+        if gfr_range[0] <= result < gfr_range[1]:
+            return description
 # Execution
 if __name__ == "__main__":
     main()
