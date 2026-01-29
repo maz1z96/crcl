@@ -1,11 +1,20 @@
 # Cockcroft-Gault CrCl, mL/min = (140 – age) × (weight, kg) × (1.23 for male or 1.04 for female) / (Cr, micromol/L)
 def main():
-    age = get_parameter("Age", int)
-    weight = get_parameter("Weight (kg)", float)
-    cr = get_parameter("Serum Creatinine (micromol/L)", float)
+    parameters = {
+        "Age": int,
+        "Weight (kg)": float,
+        "Creatinine (micromol/L)": float,
+        }
+
+    small_para = {}
+    for parameter in parameters:
+        parameter_name = parameter.split("(")[0].strip().casefold()
+        small_para[parameter_name] = get_parameter(parameter, parameters[parameter])
+
     constant = get_constant()
 
-    crcl = (140 - age) * weight * constant / cr
+    crcl = (140 - small_para["age"]) * small_para["weight"] * constant / small_para["creatinine"]
+
     crcl = round(crcl, 2)
     reading = renal_function(crcl)
 
@@ -13,10 +22,10 @@ def main():
     print(f'CrCl = {crcl} ml/min')
     print(f'Renal function = {reading}')
 
-def get_parameter(prompt, type, min=0):
+def get_parameter(prompt, cast_type, min=0):
     while True:
         try:
-            number = type(input(f'{prompt}: '))
+            number = cast_type(input(f'{prompt}: '))
         except ValueError:
             print("Please enter a valid number")
             print()
