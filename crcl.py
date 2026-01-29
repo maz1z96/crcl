@@ -3,12 +3,7 @@ def main():
     age = get_parameter("Age", int)
     weight = get_parameter("Weight (kg)", float)
     cr = get_parameter("Serum Creatinine (micromol/L)", float)
-    sex = input("Sex (M/F) ").title()
-
-    if sex == "M":
-        constant = 1.23
-    elif sex == "F":
-        constant = 1.04
+    constant = get_constant()
 
     crcl = (140 - age) * weight * constant / cr
     crcl = round(crcl, 2)
@@ -31,5 +26,22 @@ def get_parameter(prompt, type, min=0):
                 break
     return number
 
+def get_constant():
+    while True:
+        sex = input("Sex (M/F) ").title()
+
+        if sex == "M":
+            constant = 1.23
+            return constant
+        elif sex == "F":
+            constant = 1.04
+            return constant
+        else:
+            print("Please enter either M or F")
+            print()
+
+
+
+# Execution
 if __name__ == "__main__":
     main()
